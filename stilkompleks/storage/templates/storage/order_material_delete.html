@@ -1,0 +1,21 @@
+{% extends 'storage/base.html' %}
+
+{% load static %}
+
+{% block content %}
+
+
+    <div class="row">
+        <div class="col-lg-12 w-100 main-color bg-light main-border p-3 mb-4">
+            <h1>ИЗТРИИ ЗАЯВКА?</h1>
+        </div>
+    </div>
+    <h3>Сигурен ли сте че искате да изтриете: {{ ordermat }}?</h3>
+
+    <form action="" method="POST">
+    {% csrf_token %}
+    <input type="submit" class="btn btn-primary" value="ДA">
+    </form>
+
+{% endblock content %}
+

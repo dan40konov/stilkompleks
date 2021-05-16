@@ -1,0 +1,18 @@
+{% extends 'storage/base.html' %}
+
+{% load static %}
+{% load crispy_forms_tags %}
+{% block content %}
+
+
+    <div class="container col-6" style="margin-top: 30px;">
+        <form action="" method="post" id="upload_form" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{ form|crispy }}
+            <input type="submit" value="Submit">
+            <input type="submit" value="Cancel" onclick="window.location.href='{% url 'storage:obekt_list' %}';return false;">
+        </form>
+    </div>
+
+{% endblock content %}
+

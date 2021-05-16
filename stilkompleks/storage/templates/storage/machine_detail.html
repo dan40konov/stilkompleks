@@ -1,0 +1,61 @@
+{% extends 'storage/base.html' %}
+
+{% load static %}
+
+{% block content %}
+    <div class="col-lg-12 align-self-center">
+        <div class="main-bcgr text-white border border-white"><h1>{{machine.name}}</h1></div>
+    </div>
+    <div class="row p-3">
+        <div class="col-lg-4">
+            <img class="material-image upload-image" src="{% static machine.image %}"/>
+        </div>
+        <div class="col-lg-8">
+            <table border="1" class="table w-100">
+                <tr>
+                    <th>ШОФЬОР</th>
+                    <th>{{machine.personal_set.all.first}}</th>
+                </tr>
+                    <tr>
+                        <td>РЕГ. НОМЕР</td>
+                        <td>ДОБАВИ РЕГ. НОМЕР</td>
+                    </tr>
+                    <tr>
+                        <td>КАСКО</td>
+                        <td>ДОБАВИ ДАТА</td>
+                    </tr>
+                    <tr>
+                        <td>ГРАЖДАНСКА</td>
+                        <td>ДОБАВИ ДАТА</td>
+                    </tr>
+                    <tr>
+                        <td>ВИНЕТКА</td>
+                        <td>ДОБАВИ ДАТА</td>
+                    </tr>
+            </table>
+        </div>
+    </div>
+    <div class="row m-3">
+        <div class="col-lg-12 main-bcgr text-light border border-dark p-3 mt-3 mb-3">
+            <h3>{{machine.description}}</h3>
+        </div>
+    </div>
+    <div class="row">
+            {% if request.user.personal.position == 'Ad' %}
+            <div class="col-lg-3 p-2">
+                <a href="{% url 'storage:machine_update' machine.id %}"><button type="button" class="btn main-bcgr text-light border border-dark w-75">ПРОМЕНИ</button></a>
+            </div>
+            <div class="col-lg-3 p-2">
+                <a href="{% url 'storage:machine_delete' machine.id %}"><button type="button" class="btn main-bcgr text-light border border-dark w-75">ИЗТРИИ</button></a>
+            </div>
+            {% endif %}
+            <div class="col-lg-3 p-2">
+                <a href="{% url 'storage:order_machine_create' %}"><button type="button" class="btn main-bcgr text-light border border-dark w-75">ЗАЯВИ</button></a>
+            </div>
+            <div class="col-lg-3 p-2">
+                <a href="{% url 'storage:order_machine_list' %}"><button type="button" class="btn main-bcgr text-light border border-dark w-75">ЗАЯВКИ</button></a>
+            </div>
+    </div>
+
+{% endblock content %}
+

@@ -1,0 +1,105 @@
+.container {
+    position: relative;
+}
+.user-profile {
+    position: absolute;
+    top: 0;
+    right: 0;
+    padding: 5px;
+    font-weight: bold;
+    border: 1px solid black;
+}
+.logo-container {
+    text-align:center;
+    padding: 10px;
+}
+.back-arrow {
+    position: absolute;
+    top: -10px;
+    left: -5px;
+    cursor: pointer;
+    color: red;
+    font-weight: bold;
+    font-size: 25px;
+}
+.center {
+    position: relative;
+}
+input[type='number'] {
+    width: 75px;
+}
+table th {
+    font-size: 14px;
+}
+body {
+    background: transparent;
+}
+
+.btn-main .btn {
+    width: 100%;
+    font-size: 1.65em;
+    padding 1.5em;
+    font-weight: bold;
+}
+.order-row {
+    background: #5b9bd5;
+    opacity: 0.6;
+    font-size: 1.5em;
+    padding: 15px;
+    margin: 15px;
+    border-radius: 0.6em;
+    border: 1px solid #000;
+}
+.order-row a {
+    color: #fff !important;
+}
+.main-header {
+    background: #2e75b6;
+    color: #fff;
+    text-align: center;
+}
+.main-bcgr {
+    background: #5b9bd5;
+}
+.main-bcgr:hover {
+  filter: brightness(0.8);
+}
+
+.main-color {
+    color: #5b9bd5;
+    font-weight: bold;
+}
+.main-border {
+    border: 1px solid #5b9bd5;
+}
+table th {
+    background: #5b9bd5;
+    color: white;
+    padding: 5px;
+    font-size: 1.3em;
+}
+table td {
+    color: #5b9bd5;
+    font-weight: bold;
+}
+table tr:nth-child(even) {
+    background: #d2deef;
+}
+table tr:nth-child(odd) {
+    color: #5b9bd5;
+    background: #eaeff7;
+}
+.alert-danger {
+    display: none;
+}
+label[for='id_date'] {
+    background: #5b9bd5;
+    color: white;
+    font-size: 1.4em;
+    padding: 5px;
+    border-radius: 5%;
+    border: 1px solid #000;
+}
+.upload-image {
+    max-width: 200px;
+}

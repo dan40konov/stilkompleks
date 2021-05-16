@@ -1,0 +1,18 @@
+{% extends 'storage/base.html' %}
+
+{% load static %}
+
+{% block content %}
+    <div class="row main-header"><div class="col-lg-12"><h1>ИСТОРИЯ ИЗПЪЛНЕНИ ЗАЯВКИ</h1></div></div>
+    <div class="order-row">
+    {% for i in ordermat_list %}
+        <div class="row order-list ">
+            <div class="col-lg-8 text-left"><a href="{% url 'storage:order_material_completed_detail' i.id %}">{{i.date|date:"d.m.Yг."}} - ЗАЯВКА {{i.obekt|upper}} - {{i.personal}}</a></div> <div class="col-lg-4"><a href="{% url 'storage:order_material_completed_detail' i.id %}"><button type="button" class="btn btn-primary text-light border ml-4">РАЗГЛЕДАЙ</button></a></a></div>
+
+        </div>
+    {% endfor %}
+    </div>
+
+
+{% endblock content %}
+

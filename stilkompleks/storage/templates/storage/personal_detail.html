@@ -1,0 +1,40 @@
+{% extends 'storage/base.html' %}
+
+{% load static %}
+
+{% block content %}
+
+
+    <div class="row">
+        <div class="col-lg-12">
+            {{personal.name}}
+        </div>
+        {% if personal.obekt != None %}
+        <div class="col-lg-12">
+            {{personal.obekt}}
+        </div>
+        {% endif %}
+        <div class="col-lg-12">
+            {{personal.get_position_display}}
+        </div>
+
+        <div class="col-lg-12">
+            {{personal.mail}}
+        </div>
+        <div class="col-lg-12">
+            {{personal.phone_number}}
+        </div>
+        {% if personal.machine != None %}
+        <div class="col-lg-12">
+            {{personal.machine}}
+        </div>
+        {% endif %}
+    </div>
+    {% if request.user.personal.position == 'Ad' %}
+        <div calss="row"><a href="{% url 'storage:personal_update' personal.id %}">Промени</a></div>
+        <div calss="row"><a href="{% url 'storage:personal_delete' personal.id %}">Изтрии</a></div>
+    {% endif %}
+
+
+{% endblock content %}
+

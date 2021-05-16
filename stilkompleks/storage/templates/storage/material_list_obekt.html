@@ -1,0 +1,20 @@
+{% extends 'storage/base.html' %}
+
+{% load static %}
+
+{% block content %}
+    {% if obekt != None %}<div class="row"><h1>{{obekt.name}}</h1></div>{% endif %}
+    <div class="row"><h1>{{material_type.name}}</h1></div>
+    {% for m in material %}
+    <div class="row">
+        <div class="col-lg-12">
+            <a href="{% url 'storage:material_detail' m.material.id %}"><h3>{{m.material}} - {{m.amount}} {{m.amount_type}}</h3></a> {% if request.user.personal.position == 'Ad' %}<a href="{% url 'storage:obekt_material_update' m.id %}"><h4>Промени</h4></a>{% endif %}
+        </div>
+    </div>
+    {% endfor %}
+    {% if request.user.personal.position == 'Ad' %}
+        <div class="row"><a href="{% url 'storage:obekt_material_form' %}"><h2>Добави</h2></a></div>
+    {% endif %}
+
+{% endblock content %}
+

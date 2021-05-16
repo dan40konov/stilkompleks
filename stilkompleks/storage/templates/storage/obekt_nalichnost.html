@@ -1,0 +1,18 @@
+{% extends 'storage/base.html' %}
+
+{% load static %}
+
+{% block content %}
+
+
+    <div class="row"><h1>{{obekt.name}}</h1></div>
+    {% for i in material_type %}
+    <div class="row">
+        <div class="col-lg-12">
+            <a href="{% url 'storage:obekt_material_list' obekt.id i.id %}"><h3>{{i.name}}</h3></a>
+        </div>
+    </div>
+    {% endfor %}
+
+{% endblock content %}
+

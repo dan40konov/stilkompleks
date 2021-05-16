@@ -1,0 +1,15 @@
+{% extends 'storage/base.html' %}
+
+{% load static %}
+
+{% block content %}
+    <div class="row main-header mb-5"><div class="col-lg-12"><h1>ПЕРСОНАЛ</h1></div></div>
+    {% for i in personal_type %}
+    <div class="row p-2">
+        <div class="col-lg-8">
+            <a href="{% url 'storage:personal_list' forloop.counter %}"><button type="button" class="btn bg-light main-color w-50 p-3 main-border">{{i}}</button></a>
+        </div>
+    </div>
+    {% endfor %}
+{% endblock content %}
+

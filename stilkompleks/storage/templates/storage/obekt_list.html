@@ -1,0 +1,24 @@
+{% extends 'storage/base.html' %}
+
+{% load static %}
+
+{% block content %}
+    <div class="row main-header mb-5"><div class="col-lg-12"><h1>ОБЕКТИ</h1></div></div>
+    {% for obekt in obekti_list %}
+    <div class="row p-2">
+        <div class="col-lg-8">
+            <a href="{% url 'storage:obekt_detail'  obekt.id %}"><button type="button" class="btn bg-light main-color w-50 p-3 main-border">{{obekt.name}}</button></a>
+        </div>
+    </div>
+    {% endfor %}
+    {% if request.user.personal.position == 'Ad' %}
+    <div class="row mt-3">
+        <div class="col-lg-4 p-2">
+            <a href="{% url 'storage:obekt_form' %}"><button type="button" class="btn main-bcgr text-light border border-dark w-75">ДОБАВИ</button></a>
+        </div>
+    </div>
+
+    {% endif %}
+
+{% endblock content %}
+

@@ -1,0 +1,90 @@
+{% extends 'storage/base.html' %}
+
+{% load static %}
+
+{% block content %}
+
+
+    <div class="row">
+        <div class="col-lg-12 w-100 main-color bg-light main-border p-3 mb-4">
+            <h1>ЗАЯВКА {{ordermat.obekt|upper}} - {{ordermat.date|date:"d.m.Yг."}}</h1>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-5 main-bcgr text-light border border-light">
+            <h3>ОБЕКТ: {{ordermat.obekt|upper}}</h3>
+        </div>
+        <div class="col-lg-2">
+            &nbsp;
+        </div>
+        <div class="col-lg-5 main-bcgr text-light border border-light">
+            <h3>ДАТА: {{ordermat.date|date:"d.m.Yг."}}</h32>
+        </div>
+    </div>
+
+    <div class="row mt-5">
+        <table border="1" class="w-100">
+            <tr>
+                <th>
+                    №
+                </th>
+                <th>
+                    МАТЕРИАЛ
+                </th>
+                <th>
+                    НЕОБХОДИМО КОЛИЧЕСТВО
+                </th>
+                {% for ob in obekts %}
+                    <th>
+                        {{ ob.name }}
+                    </th>
+                {% endfor %}
+            </tr>
+            {% for key in ordermat.ordermaterial_set.all %}
+                <tr>
+                    <td>
+                        {{ forloop.counter }}
+                    </td>
+                    <td>
+                        {{key.material}}
+                    </td>
+                    <td>
+                        {{key.amount|floatformat:"2"}}
+                    </td>
+                    {% for key2, value2 in proposed_material_per_obekt.items %}
+                        {% if key2 == key.id %}
+                            {% for item in value2.obekts %}
+                                {% for i in item %}
+                                    {% if forloop.last %}
+                                        <td>
+                                            {% if i.allowed == None %}
+                                                0
+                                            {% else %}
+                                                {{ i.allowed }}
+                                            {% endif %}
+                                        </td>
+                                    {% endif %}
+                                {% endfor %}
+                            {% endfor %}
+                        {% endif %}
+                    {% endfor %}
+                </tr>
+            {% endfor %}
+        </table>
+    </div>
+
+    {% if request.user.personal.position == 'Ad' %}
+    <div class="row mt-3">
+        <div class="col-lg-4 p-2">
+            <a href="{% url 'storage:order_material_update' ordermat.id %}"><button type="button" class="btn main-bcgr text-light border border-dark w-75">РЕДАКТИРАЙ</button></a>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-4 p-2">
+            <a href="{% url 'storage:order_material_delete' ordermat.id %}"><button type="button" class="btn main-bcgr text-light border border-dark w-75">ИЗТРИИ</button></a>
+        </div>
+    </div>
+    {% endif %}
+
+{% endblock content %}

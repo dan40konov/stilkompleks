@@ -1,0 +1,28 @@
+{% extends 'storage/base.html' %}
+
+{% load static %}
+
+{% block content %}
+
+    <h1>Заявка</h1><br/>
+    <div class="row w-100" style="text-align: center;">
+
+        <table padding="10" style="margin: auto;" border="1">
+            <tr>
+                <td>Маниша</td> <td>{{ordermachine.machine}}</td>
+            </tr>
+            <tr>
+                <td>Обект</td> <td>{{ordermachine.obekt}}</td>
+            </tr>
+            <tr>
+                <td>Час</td> <td>{{hours_scheduled}}</td>
+            </tr>
+            <tr>
+                <td>Дата</td> <td>{{ordermachine.date}}</td>
+            </tr>
+        </table>
+    </div>
+
+
+{% endblock content %}
+

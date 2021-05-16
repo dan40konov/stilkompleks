@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+    <h1>Accounts Page</h1>
+    <table class="table">
+    <thead>
+        <tr>
+        <th scope="col">S.NO</th>
+        <th scope="col">Category Name</th>
+        <th scope="col">Created date</th>
+        <th scope="col">User Name</th>
+        <th scope="col">Password</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for account in accounts_list %}
+        
+            <tr>
+            <th scope="row">{{ forloop.counter }}</th>
+            <td>{{account.category}}</td>
+            <td>{{account.created_on}}</td>
+            <td>{{account.user_name}}</td>
+            <td>{{account.password}}</td>
+            <td>
+            <a class="btn btn-primary" href="{% url 'view_pass' account.pk  %}" role="button">View Password</a>
+            
+  
+            <a class="btn btn-primary" href="{% url 'update_details' account.pk %}" role="button">Update Details</a>
+       
+            <a class="btn btn-primary" href="{% url 'delete' account.pk %}" role="button">Delete</a>
+
+            </td>
+            </tr>
+            
+        {% endfor %}
+    </tbody>
+    </table>
+    
+
+{% endblock %}
+

@@ -1,0 +1,31 @@
+{% extends 'storage/base.html' %}
+
+{% load static %}
+
+{% block content %}
+    <div class="row main-header mb-3"><div class="col-lg-12"><h1>{{material_type.name}}</h1></div></div>
+
+
+    {% for m in material %}
+        <div class="row">
+            <div class="col-lg-12 main-border p2 mb-3">
+                <a href="{% url 'storage:material_detail' m.id %}"><h3>{{m.name}}</h3></a>
+            </div>
+        </div>
+    {% endfor %}
+    {% if request.user.personal.position == 'Ad' %}
+        <div class="row p-2 mt-2">
+            <div class="col-4">
+                <a href="{% url 'storage:material_form' %}"><button type="button" class="add-field btn main-bcgr text-light border border-dark w-75"><strong>ДОБАВИ</strong></button></a>
+            </div>
+        </div>
+        <div class="row p-2 mt-2">
+            <div class="col-4">
+                <a href="{% url 'storage:material_type_update' material_type.id %}"><button type="button" class="add-field btn main-bcgr text-light border border-dark w-75"><strong>ПРОМЕНИ</strong></button></a>
+            </div>
+        </div>
+    {% endif %}
+
+
+{% endblock content %}
+

@@ -1,0 +1,46 @@
+{% extends 'storage/base.html' %}
+
+{% load static %}
+
+{% block content %}
+    <div class="row main-header"><div class="col-lg-12"><h1>Материална База</h1></div></div>
+    <div class="content-wrapper-materil-types mt-5">
+    {% for i in materialtype_list %}
+        <div class="row p-2">
+            <div class="col-lg-8">
+                <a href="{% url 'storage:material_list' i.id %}"><button type="button" class="btn bg-light main-color w-50 p-3 main-border">{{i.name}}</button></a>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% if request.user.personal.position == 'Ad' %}
+        <div class="row mt-5">
+            <div class="col-lg-4 p-2">
+                <a href="{% url 'storage:material_type_create' %}"><button type="button" class="btn main-bcgr text-light border border-dark w-75">ДОБАВИ</button></a>
+            </div>
+            <div class="col-lg-8 p-2">
+                <a href="{% url 'storage:order_material_list' %}"><button type="button" class="btn main-bcgr text-light border border-dark w-75">ИСТОРИЯ ИЗПЪЛНЕНИ ЗАЯВКИ</button></a>
+            </div>
+        </div>
+    {% else %}
+        <div class="row mt-5 p-2">
+            <div class="col-lg-4 p-2">
+                &nbsp;
+            </div>
+            <div class="col-lg-8 p-2">
+                <a href="{% url 'storage:order_material_list' %}"><button type="button" class="btn main-bcgr text-light border border-dark w-75">ИСТОРИЯ ИЗПЪЛНЕНИ ЗАЯВКИ</button></a>
+            </div>
+        </div>
+    {% endif %}
+
+    <div class="row">
+        <div class="col-lg-4 p-2">
+            &nbsp;
+        </div>
+        <div class="col-lg-8 p-2">
+            <a href="{% url 'storage:order_material_create' %}"><button type="button" class="btn main-bcgr text-light border border-dark w-75">НОВА ЗАЯВКА</button></a>
+        </div>
+    </div>
+
+{% endblock content %}
+

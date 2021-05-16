@@ -1,0 +1,17 @@
+{% extends 'storage/base.html' %}
+
+{% load static %}
+
+{% block content %}
+
+    <h1>Изтрии</h1>
+
+    <p>Сигурен ли сте че искате да изтриете: {{ obekti }}?</p>
+
+    <form action="" method="POST">
+    {% csrf_token %}
+    <input type="submit" value="Да">
+    </form>
+
+{% endblock content %}
+

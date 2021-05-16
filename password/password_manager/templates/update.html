@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<!DOCTYPE html>
+    <head>
+        <title>Update</title>
+    </head>
+    <body>
+        <form method="POST">
+            {% csrf_token %}
+
+            <div class="container">
+                <div class="td">
+                    <label>Category</label>
+                    
+                        <a>{{ item.category }}</a>
+
+                    </div>
+                
+             
+                <div class="td">
+                    <label>Others</label>
+                    <input type="text" name="other_account" id="other_account" value="{{ item.other_account }}">
+                </div>
+                <div class="td">
+                    <label>UserName</label>
+                    <input type="text" name="user_name" id="user_name" value="{{item.user_name}}" placeholder="{{item.user_name}}">
+                </div>
+                <div>
+                    <label>Password</label>
+                    <input type="password" name="password" id="password" value="{{ item.password }}">
+                </div>
+
+                <div>
+                    <label>Confirm Password</label>
+                    <input type="password" name="confirm_password" id="confirm_password" value="{{ item.confirm_password }}">
+                </div>
+                <input type="submit" value="Update">
+
+                {% for message in messages %}
+                    {{ message }}
+                {% endfor %}
+            </div>
+
+        </form>
+    </body>
+</html>
+
+    
+    
+
+{% endblock %}

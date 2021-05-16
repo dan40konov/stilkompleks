@@ -1,0 +1,266 @@
+{% extends 'storage/base.html' %}
+
+{% load static %}
+
+{% block content %}
+
+
+    <div class="row">
+        <div class="col-lg-12">
+            {{ordermat.obekt}} - {{ordermat.date}} ({{ordermat.complete}})
+        </div>
+
+        <form action="" method="post" id="upload_form" enctype="multipart/form-data">
+            {% csrf_token %}
+            <table border="1">
+                {% if position == 'Ad' %}
+                    <tr>
+                        <th colspan="3"/>
+                        {% for ob in obekts %}
+
+                                <th colspan="3">
+                                    {{ ob.name }}
+                                </th>
+                        {% endfor %}
+                        {% for key,base in base_list.items %}
+                                <th colspan="2">
+                                    {{ base }}
+                                </th>
+                        {% endfor %}
+                    </tr>
+                {% endif %}
+                {% if position == 'De' %}
+                    <tr>
+                        <th colspan="3"/>
+                        {% for ob in obekts %}
+
+                                <th colspan="1">
+                                    {{ ob.obekt }}
+                                </th>
+                        {% endfor %}
+                    </tr>
+                {% endif %}
+                {% if flag_tc_approve %}
+                    <tr>
+                        <th colspan="3"/>
+                        {% for ob in obekts %}
+
+                                <th colspan="1">
+                                    {{ ob.name }}
+                                </th>
+                        {% endfor %}
+                    </tr>
+                {% endif %}
+                <tr>
+                    <th>
+
+                    </th>
+                    <th>
+                        Вид материал
+                    </th>
+                    <th>
+                        Необходимо количество
+                     </th>
+                    {% if flag_tc_approve %}
+                        <th>
+                            Получено количество
+                        </th>
+                    {% elif position == 'Tc'  %}
+                        <th>
+                            Налично Количество
+                        </th>
+                        <th>
+                            Възможност за изпращане
+                        </th>
+                    {% endif %}
+                    {% if position == 'Ad' %}
+                        {% for ob in obekts %}
+                            <th>
+                                Налично Количество
+                            </th>
+                            <th>
+                                Възможност за изпращане
+                            </th>
+
+                            <th>
+                                ФИНАЛ ЗА ВЗИМАНЕ
+                            </th>
+                        {% endfor %}
+                        {% for base in base_list %}
+                            <th>
+                                Налично Количество
+                            </th>
+                            <th>
+                                ФИНАЛ ЗА ВЗИМАНЕ
+                            </th>
+                        {% endfor %}
+                    {% endif %}
+                    {% if position == 'De' %}
+                        {% for ob in obekts %}
+                            <th>
+                                Количество за взимане
+                            </th>
+                        {% endfor %}
+                    {% endif %}
+                </tr>
+                {% if flag_tc_approve %}
+                    {% for key in ordermat.ordermaterial_set.all %}
+                        <tr>
+                            <td>
+                                {{ forloop.counter }}
+                            </td>
+                            <td>
+                                {{key.material.name}}
+                            </td>
+                            <td>
+                                {{key.amount}}
+                            </td>
+                            {% for key2, value2 in proposed_material_per_obekt.items %}
+                                {% if key2 == key.id %}
+                                    {% for item in value2.obekts %}
+                                        {% for i in item %}
+                                            {% if forloop.last %}
+                                                {% if i.allowed != None %}
+                                                    <td><input type="number" value="{{ i.allowed }}" name="allowed-{{ i.id }}" step="0.01" id="id_amount"></td>
+                                                {% else %}
+                                                    <td>Няма Налично</td>
+                                                {% endif %}
+                                            {% endif %}
+                                        {% endfor %}
+                                    {% endfor %}
+                                {% endif %}
+                            {% endfor %}
+                        </tr>
+                    {% endfor %}
+                {% elif position == 'Tc' %}
+                    {% for key, mat in order_mat_dict.items %}
+                        <tr>
+                            <td>
+                            {{ forloop.counter }}
+                            </td>
+                            <td>
+                                {{key.material.name}}
+                            </td>
+                            <td>
+                                {{key.amount|floatformat:"2"}}
+                            </td>
+                                    <td>
+                                        {{ mat.amount_on_obekt|floatformat:"2" }}
+                                    </td>
+                                    {% if mat.amount_on_obekt != 0 and mat.amount_on_obekt != 0.0 and mat.amount_on_obekt != 'Няма налично' %}
+                                    <td>
+                                        {% if mat.amount_provided != None %}
+                                            <input type="number" value="{{ mat.amount_provided }}" name="amount" step="0.01" id="id_amount">
+                                        {% else %}
+                                            <input type="number" name="amount" step="0.01" id="id_amount">
+                                        {% endif %}
+                                    </td>
+                                    {% else %}
+                                    <td class="disabledAmountField">
+                                        {{ form.amount }}
+                                    </td>
+                                    {% endif %}
+                        </tr>
+                    {% endfor %}
+                {% endif %}
+                    {% if position == 'Ad' %}
+                        {% for key in ordermat.ordermaterial_set.all %}
+                        <tr>
+                            <td>
+                                {{ forloop.counter }}
+                            </td>
+                            <td>
+                                {{key.material.name}}
+                            </td>
+                            <td>
+                                {{key.amount|floatformat:"2"}}
+                            </td>
+                            {% for key2, value2 in proposed_material_per_obekt.items %}
+                                {% if key2 == key.id %}
+                                    {% for item in value2.obekts %}
+                                        {% for i in item %}
+                                            {% if forloop.last %}
+                                                <td>
+                                                    <input type="number" value="{{i.allowed}}" name="allowed-{{ i.id }}" step="0.01" id="id_amount">
+                                                </td>
+                                            {% else %}
+                                                <td> {{ i|floatformat:"2" }}</td>
+                                            {% endif %}
+                                        {% endfor %}
+                                    {% endfor %}
+                                {% endif %}
+                            {% endfor %}
+                            {% for key_base, base in base_list.items %}
+                                {% for mat_per_obekt in base.materialperobekt_set.all %}
+                                    {% if mat_per_obekt.material.id == key.material.id %}
+                                        <td>
+                                            {{ mat_per_obekt.amount|floatformat:"2" }}
+                                        </td>
+                                    {% endif %}
+                                {% endfor %}
+                                <td>
+                                    <input type="number" name="base-allowed-{{ base.id }}-{{ key.material.id }}" step="0.01" id="id_amount">
+                                </td>
+                            {% endfor %}
+                        </tr>
+                        {% endfor %}
+                    {% endif %}
+                    {% if position == 'De' %}
+                        {% for key in ordermat.ordermaterial_set.all %}
+                        <tr>
+                            <td>
+                                {{ forloop.counter }}
+                            </td>
+                            <td>
+                                {{key.material.name}}
+                            </td>
+                            <td>
+                                {{key.amount}}
+                            </td>
+                            {% for key2, value2 in proposed_material_per_obekt.items %}
+                                {% if key2 == key.id %}
+                                    {% for item in value2.obekts %}
+                                        {% for i in item %}
+                                            {% if forloop.last %}
+                                                <td>
+                                                    {{ i.allowed }}
+                                                </td>
+                                            {% endif %}
+                                        {% endfor %}
+                                    {% endfor %}
+                                {% endif %}
+                            {% endfor %}
+                        </tr>
+                        {% endfor %}
+                    {% endif %}
+            </table><br/><br/>
+
+            {% if position == 'Ad' %}
+                {{OrderMatFormTransport}}
+            {% endif %}
+
+            {% if position == 'De' %}
+                Дата за доставка: {{ ordermat.date }}
+            {% endif %}
+
+            {% if position == 'Ad' or position == 'Tc' %}
+                <input class="btn btn-success" type="submit" value="Потвърди">
+            {% endif %}
+
+        </form>
+    </div>
+    {% if request.user.personal.position == 'Ad' %}
+        <div calss="row"><a href="{% url 'storage:order_material_update' ordermat.id %}">Промени</a></div>
+        <div calss="row"><a href="{% url 'storage:order_material_delete' ordermat.id %}">Изтрии</a></div>
+    {% endif %}
+
+
+{% endblock content %}
+{% block end_body %}
+<script type="text/javascript">
+    $(document).ready(function() {
+        $ (".disabledAmountField input").css("visibility", "hidden").val("0")
+        $ ("input[type='number'], input[type='text']").attr("autocomplete","off")
+    })
+</script>
+{% endblock end_body %}

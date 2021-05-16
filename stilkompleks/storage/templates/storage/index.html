@@ -1,0 +1,42 @@
+{% extends 'storage/base.html' %}
+
+
+
+{% block content %}
+
+
+        <div class="row d-flex align-items-center justify-content-center">
+            <div class="btn-main col-6 p-4 text-center">
+                <a href="{% url 'storage:material_type_list' %}"><button type="button" class="btn main-bcgr text-light border border-light">МАТЕРИАЛНА БАЗА</button></a>
+            </div>
+            <div class="btn-main col-6 p-4 text-center">
+                <a href="{% url 'storage:obekt_list' %}"><button type="button" class="btn main-bcgr text-light border border-light">ОБЕКТИ</button></a>
+            </div>
+        </div>
+        <div class="row d-flex align-items-center justify-content-center">
+            <div class="btn-main col-6 p-4 text-center">
+                <a href="{% url 'storage:machine_list' %}"><button type="button" class="btn main-bcgr text-light border border-light">МЕХАНИЗАЦИЯ</button></a>
+            </div>
+            <div class="btn-main col-6 p-4 text-center">
+                <a href="{% url 'storage:personal_type' %}"><button type="button" class="btn main-bcgr text-light border border-light">ПЕРСОНАЛ</button></a>
+            </div>
+        </div>
+        {% if request.user_agent.is_mobile %}
+             <div class="row"><a href="{% url 'storage:order_material_list' %}"><h2>ЗАЯВКИ</h2></a></div>
+        {% else %}
+        <div class="order-row">
+        {% for i in ordermat %}
+            <div class="row order-list ">
+                {% if i.personal == request.user.personal and i.approved == False %}
+                    <div class="col-lg-8 text-left"><a href="{% url 'storage:order_material_update' i.id %}">{{i.date|date:"d.m.Yг."}} - ЗАЯВКА {{i.obekt|upper}} - {{i.personal}}</a></div> <div class="col-lg-4"><a href="{% url 'storage:order_material_update' i.id %}"><button type="button" class="btn btn-primary text-light border ml-4">РАЗГЛЕДАЙ</button></a></a></div>
+                {% else %}
+                    <div class="col-lg-8 text-left"><a href="{% url 'storage:order_material_detail' i.id %}">{{i.date|date:"d.m.Yг."}} - ЗАЯВКА {{i.obekt|upper}} - {{i.personal}}</a></div> <div class="col-lg-4"><a href="{% url 'storage:order_material_detail' i.id %}"><button type="button" class="btn btn-primary text-light border ml-4">РАЗГЛЕДАЙ</button></a></a></div>
+                {% endif %}
+            </div>
+        {% endfor %}
+        </div>
+        {% endif %}
+
+
+{% endblock content %}
+

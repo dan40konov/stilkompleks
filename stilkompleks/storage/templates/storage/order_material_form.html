@@ -1,0 +1,94 @@
+{% extends 'storage/base.html' %}
+
+{% load static %}
+{% load crispy_forms_tags %}
+{% block content %}
+
+    <div class="row main-header mb-3"><div class="col-lg-12"><h1>НОВА ЗАЯВКА</h1></div></div>
+    <div class="row mb-3"><div class="col-lg-4 main-header"><h3>ОБЕКТ: {{ request.user.personal.obekt|upper }}</h3></div></div>
+    <div class="alert alert-danger">
+        <strong>Внимание!</strong> Моля попълнете полетата правилно!
+    </div>
+    <div class="container col-12" style="margin-top: 30px;">
+        <form action="" method="post" id="upload_form" enctype="multipart/form-data">
+            {% csrf_token %}
+
+            <table class="order-table w-100 table table-responsive" border="1">
+              <tr>
+                <th></th>
+                <th>МАТЕРИАЛ</th>
+                <th>НЕОБХОДИМО КОЛИЧЕСТВО</th>
+              </tr>
+              {% for item in '12345'|make_list %}
+              <tr>
+                <td>{{ item }}</td>
+                <td>
+                  {{ order_mat_form.material }}
+                </td>
+                <td>
+                  {{ order_mat_form.amount }}
+                </td>
+              </tr>
+              {% endfor %}
+          </table>
+
+          {% if order_mat_completed_form %}
+              {{order_mat_completed_form|crispy}}
+          {% endif %}
+          <div class="row p-2 mt-2">
+            <div class="col-4">
+                <button type="button" class="add-field btn main-bcgr text-light border border-dark w-75"><strong>ДОБАВИ</strong></button>
+            </div>
+            <div class="col-4"> </div>
+            <div class="col-4">
+                <input class="btn main-bcgr text-white btn-submit w-100 border border-dark font-weight-bold" type="submit" value="ИЗПРАТИ">
+            </div>
+          </div>
+          <div class="row p-2">
+            <div class="col-8"></div><div class="col-4"><input class="btn main-bcgr text-white w-100 border border-dark font-weight-bold" type="submit" value="ОТКАЖИ" onclick="window.location.href='{% url 'storage:obekt_list' %}';return false;"></div>
+          </div>
+          {{order_form|crispy}}
+        </form>
+    </div>
+
+{% endblock content %}
+{% block end_body %}
+<script type="text/javascript">
+    $(document).ready(function() {
+        $("#id_date").datepicker({
+            minDate : 0
+        });
+
+        {% if ordermat %}
+
+            var ordermat_array = {{ ordermat_array }};
+            console.log(ordermat_array, ordermat_array.length)
+            $ ("select[name='material']").slice(0, ordermat_array.length).each(function(i) {
+                $ (this).val(ordermat_array[i][0]);
+                $ ("input[name='amount']").eq(i).val(ordermat_array[i][1]);
+            })
+
+        {% endif %}
+        $ (".btn-submit").on("click", function(e) {
+            let errorCheck = false;
+            $ ("select[name='material']").each(function() {
+
+                if ($ (this).val() != "") {
+                    if ($ (this).parents("tr").find("input[type='number']").val() == "") {
+                        errorCheck = true
+                    }
+                }
+            })
+            if (errorCheck) {
+                e.preventDefault();
+                $ (".alert-danger").show()
+            }
+        })
+
+        $ (".add-field").on("click", function() {
+            $ (".order-table tr:last").after($ (".order-table tr:last").clone());
+            $ (".order-table tr:last").find("td:first").text(parseInt($ (".order-table tr:last").find("td:first").text()) + 1);
+        })
+    })
+</script>
+{% endblock end_body %}
