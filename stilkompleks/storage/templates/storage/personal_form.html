@@ -12,9 +12,9 @@
             <p><label for="id_name">Потребител: </label> {{form_user.username}}</p>
             <p><label for="id_name">Парола: </label> {{form_user.password1}}</p>
             <p><label for="id_name">Потвърди парола: </label> {{form_user.password2}}</p>
-            
-            <input type="submit" value="Submit">
-            <input type="submit" value="Cancel" onclick="window.location.href='{% url 'storage:personal_type' %}';return false;">
+
+            <input class="btn main-bcgr text-light" type="submit" value="ДОБАВИ">
+            <input class="btn main-bcgr text-light" type="submit" value="ОТКАЖИ" onclick="window.location.href='{% url 'storage:material_type_list' %}';return false;">
         </form>
     </div>
 

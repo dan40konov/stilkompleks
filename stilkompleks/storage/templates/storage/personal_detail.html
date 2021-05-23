@@ -3,37 +3,49 @@
 {% load static %}
 
 {% block content %}
-
-
-    <div class="row">
-        <div class="col-lg-12">
-            {{personal.name}}
+<div class="col-lg-12 align-self-center">
+        <div class="main-bcgr text-white border border-white"><h1>{{personal.name}}</h1></div>
+    </div>
+    <div class="row p-3">
+        <div class="col-lg-4">
+            <img class="material-image upload-image" src="{% static personal.image %}"/>
         </div>
-        {% if personal.obekt != None %}
-        <div class="col-lg-12">
-            {{personal.obekt}}
+        <div class="col-lg-8">
+            <table border="1" class="table w-100">
+                <tr>
+                    <th>ОБЕКТ</th>
+                    <th>{{personal.obekt}}</th>
+                </tr>
+                    <tr>
+                        <td>ТЕЛЕФОН</td>
+                        <td>{{personal.phone_number}}</td>
+                    </tr>
+                    <tr>
+                        <td>ИМЕЙЛ</td>
+                        <td>{{personal.mail}}</td>
+                    </tr>
+                    {% if personal.machine != None %}
+                    <tr>
+                        <td>МАШИНА</td>
+                        <td>{{personal.machine}}</td>
+                    </tr>
+                    {% endif %}
+            </table>
         </div>
-        {% endif %}
-        <div class="col-lg-12">
-            {{personal.get_position_display}}
-        </div>
-
-        <div class="col-lg-12">
-            {{personal.mail}}
-        </div>
-        <div class="col-lg-12">
-            {{personal.phone_number}}
-        </div>
-        {% if personal.machine != None %}
-        <div class="col-lg-12">
-            {{personal.machine}}
-        </div>
-        {% endif %}
     </div>
     {% if request.user.personal.position == 'Ad' %}
-        <div calss="row"><a href="{% url 'storage:personal_update' personal.id %}">Промени</a></div>
-        <div calss="row"><a href="{% url 'storage:personal_delete' personal.id %}">Изтрии</a></div>
+    <div class="row">
+            <div class="col-lg-3 p-2">
+                <a href="{% url 'storage:personal_update' personal.id %}"><button type="button" class="btn main-bcgr text-light border border-dark w-75">ПРОМЕНИ</button></a>
+            </div>
+    </div>
+    <div class="row">
+            <div class="col-lg-3 p-2">
+                <a href="{% url 'storage:personal_delete' personal.id %}"><button type="button" class="btn main-bcgr text-light border border-dark w-75">ИЗТРИИ</button></a>
+            </div>
+    </div>
     {% endif %}
+
 
 
 {% endblock content %}

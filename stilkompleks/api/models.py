@@ -8,46 +8,46 @@ from django.core.exceptions import NON_FIELD_ERRORS, ValidationError
 
 
 class Machine(models.Model):
-    name = models.CharField(max_length=50, null=False)
-    description = models.CharField(max_length=255, null=False)
+    name = models.CharField('ВЪВЕДИ ИМЕ', max_length=50, null=False)
+    description = models.CharField('ВЪВЕДИ ОПИСАНИЕ', max_length=255, null=False)
     image = models.ImageField('ИЗБЕРИ СНИМКА', null=True, blank=True)
-
+    reg_number = models.CharField('ВЪВЕДИ РЕГ. НОМЕР',max_length=50, null=False)
+    kasko_date = models.DateField('ВЪВЕДИ КАСКО', null=True)
+    graj_date = models.DateField('ВЪВЕДИ ГРАЖДАНСКА', null=True)
+    vinetka_date = models.DateField('ВЪВЕДИ ВИНЕТКА', null=True)
 
     def __str__(self):
         return self.name
 
 class MaterialType(models.Model):
-    name = models.CharField(max_length=50, null=False)
+    name = models.CharField('ВЪВЕДИ ИМЕ', max_length=50, null=False)
 
     def __str__(self):
         return self.name
 
 
 class Obekti(models.Model):
-    name = models.CharField("Име",
+    name = models.CharField('ВЪВЕДИ ИМЕ',
         max_length=50)
-    investor = models.CharField("Инвеститор", max_length=50)
+    investor = models.CharField('ВЪВЕДИ ИНВЕСТИТОР' , max_length=50)
     image = models.ImageField('ИЗБЕРИ СНИМКА', null=True, blank=True)
-    address = models.CharField("Адрес", max_length=50)
+    address = models.CharField('ВЪВЕДИ АДРЕС' , max_length=50)
     created_at = models.DateTimeField(auto_now_add=True)
-    base = models.BooleanField(default=False)
+    base = models.BooleanField('ИЗБЕРИ БАЗА', default=False)
     def __str__(self):
         return self.name
 
 
 class Material(models.Model):
-    class Type(models.TextChoices):
-        KOFRAJPLOCHI = 'Kp', _('Кофражи за Плочи')
-        KOFRAJVERTIKALI = 'Kv', _('Кофражи за Вертикали')
-        SKELE = 'Sk', _('Скеле')
 
-    name = models.CharField(max_length=50, null=False)
-    description = models.CharField(max_length=255, null=True, blank=True)
-    amount_type = models.CharField(max_length=10, null=True, blank=True)
+    name = models.CharField('ВЪВЕДИ ИМЕ', max_length=50, null=False)
+    description = models.CharField('ВЪВЕДИ ОПИСАНИЕ', max_length=255, null=True, blank=True)
+    amount_type = models.CharField('ВЪВЕДИ ЕД. МЯРКА', max_length=10, null=True, blank=True)
     image = models.ImageField('ИЗБЕРИ СНИМКА', null=True, blank=True)
     type = models.ForeignKey(
         MaterialType,
         on_delete=models.CASCADE,
+        verbose_name='ИЗБЕРИ МАТЕРИАЛ',
     )
 
     def __str__(self):
@@ -66,17 +66,19 @@ class Material(models.Model):
 class MaterialPerObekt(models.Model):
     obekt = models.ForeignKey(
         Obekti,
+        verbose_name='ИЗБЕРИ ОБЕКТ',
         on_delete=models.CASCADE,
         null=True,
         blank=True
     )
     material = models.ForeignKey(
         Material,
+        verbose_name='ИЗБЕРИ ТИП',
         on_delete=models.CASCADE,
         null=True,
         blank=True
     )
-    amount = models.DecimalField(max_digits=10, decimal_places=5)
+    amount = models.DecimalField('ВЪВЕДИ КОЛИЧЕСТВО', max_digits=10, decimal_places=5)
 
 
     def __str__(self):
@@ -97,16 +99,16 @@ class Personal(models.Model):
         ADMIN = 'Ad', _('Администратори')
 
     image = models.ImageField('ИЗБЕРИ СНИМКА', null=True, blank=True)
-    name = models.CharField(max_length=50, null=False)
-    position = models.CharField(max_length=255, choices=Position.choices, null=False)
+    name = models.CharField('ВЪВЕДИ ИМЕ',max_length=50, null=False)
+    position = models.CharField(' ИЗБЕРИ ПОЗИЦИЯ',max_length=255, choices=Position.choices, null=False)
     obekt = models.ForeignKey(
         Obekti,
         on_delete=models.SET_NULL,
         null=True,
         blank=True,
     )
-    mail = models.EmailField(max_length=50)
-    phone_number = models.CharField(max_length=50)
+    mail = models.EmailField('ВЪВЕДИ ЕЛ. ПОЩА',max_length=50)
+    phone_number = models.CharField('ВЪВЕДИ ТЕЛ. НОМЕР',max_length=50)
     machine = models.ForeignKey(Machine, models.SET_NULL,
     blank=True,
     null=True)
@@ -127,10 +129,9 @@ class Personal(models.Model):
 class OrderMat(models.Model):
     personal = models.ForeignKey(Personal, on_delete=models.SET_NULL, null=True, blank=True)
     date_ordered = models.DateTimeField(auto_now_add=True)
-    complete = models.BooleanField(default=False)
+    complete = models.BooleanField('ЗАВЪРШИ ПОРЪЧКА',default=False)
     date = models.DateField('ИЗБЕРИ ДАТА', null=True)
-    complete = models.BooleanField(default=False)
-    approved = models.BooleanField(default=False, null=True, blank=True)
+    approved = models.BooleanField('ОДОБРИ ПОРЪЧКА',default=False, null=True, blank=True)
     obekt = models.ForeignKey(
         Obekti,
         on_delete=models.SET_NULL,

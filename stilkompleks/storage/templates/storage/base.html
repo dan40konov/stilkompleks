@@ -52,7 +52,7 @@ html {
 
         <div class="logo-container"><a href="/"><img class="logo-image" src="http://stilkompleks.com/wp/wp-content/uploads/2016/07/small_logo.png"/></a></div>
         <div class="main-container center mb-5 rounded clearfix p-3 m-3" style="text-align:center;">
-            {% if request.path != '/' %}<div class="back-arrow"><a onclick="window.history.back();"><<</a></div>{% endif %}
+            {% if request.path != '/' %}<div onclick="window.history.back();" class="back-arrow"><<</div>{% endif %}
             {% block content %}
 
             {% endblock content %}

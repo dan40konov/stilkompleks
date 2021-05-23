@@ -7,11 +7,17 @@
 
 
     {% for m in material %}
-        <div class="row">
-            <div class="col-lg-12 main-border p2 mb-3">
-                <a href="{% url 'storage:material_detail' m.id %}"><h3>{{m.name}}</h3></a>
-            </div>
+    <div class="row main-border p-2 mb-3">
+        <div class="col-lg-4">
+            <a href="{% url 'storage:material_detail' m.id %}">
+                <img class="material-image upload-image" src="{% static m.image %}"/>
+            </a>
         </div>
+
+        <div class="col-lg-6" style="display: grid;">
+            <a style="justify-self: center; align-self: center; width: 100%;" href="{% url 'storage:material_detail' m.id %}"><button type="button" class="btn main-bcgr text-light border border-light w-100 p-3">{{m.name}}</button></a>
+        </div>
+    </div>
     {% endfor %}
     {% if request.user.personal.position == 'Ad' %}
         <div class="row p-2 mt-2">

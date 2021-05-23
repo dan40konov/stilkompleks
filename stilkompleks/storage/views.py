@@ -11,12 +11,15 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect, get_object_or_404
 
 def index(request):
-    personal = request.user.personal
-    if (personal.position == 'De'):
-        queryset = OrderMat.objects.filter(approved=True, complete=False).order_by('date')
-    else:
-        queryset = OrderMat.objects.filter(complete=False).order_by('date')
-    ctx = { 'ordermat' : queryset }
+    ctx = {}
+    if request.user.is_authenticated:
+        personal = request.user.personal
+        if (personal.position == 'De'):
+            queryset = OrderMat.objects.filter(approved=True, complete=False).order_by('date')
+        else:
+            queryset = OrderMat.objects.filter(complete=False).order_by('date')
+        ctx = { 'ordermat' : queryset }
+
     return render(request, 'storage/index.html', ctx)
 
 
@@ -346,7 +349,7 @@ class detailOrderMaterial(DetailView):
     model = OrderMat
     fields = ['material', 'obekt', 'personal', ]
     template_name = 'storage/order_material_detail.html'
-    success_url = reverse_lazy('storage:order_material_list')
+    success_url = reverse_lazy('storage:material_type_list')
     def get(self, request, pk):
         if request.user.personal.position == 'Tc':
 
@@ -542,7 +545,7 @@ class detailOrderMaterialCompleted(DetailView):
     model = OrderMat
     fields = ['material', 'obekt', 'personal', ]
     template_name = 'storage/order_material_completed_detail.html'
-    success_url = reverse_lazy('storage:order_material_list')
+    success_url = reverse_lazy('storage:material_type_list')
     def get(self, request, pk):
         if request.user.personal.position == 'Ad':
             ordermat = self.model.objects.get(pk=pk)
@@ -662,7 +665,7 @@ class updateOrderMaterial(UpdateView):
     model = OrderMaterial
     fields = ['material', 'amount', 'obekt']
     template = 'storage/order_material_form.html'
-    success_url = reverse_lazy('storage:order_material_list')
+    success_url = reverse_lazy('storage:material_type_list')
     def get(self, request, pk):
         order_mat_form = OrderMaterialForm()
         mc = self.model.objects.all()
